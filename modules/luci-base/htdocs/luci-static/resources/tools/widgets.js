@@ -341,16 +341,17 @@ var CBINetworkSelect = form.ListValue.extend({
 		var span = E('span', { 'class': 'ifacebadge' }, network.getName() + ': '),
 		    devices = network.isBridge() ? network.getDevices() : L.toArray(network.getDevice());
 
+		if (!devices || !devices.length) {
+			span.appendChild(E('em', { 'class': 'hide-close' }, _('(no interfaces attached)')));
+			span.appendChild(E('em', { 'class': 'hide-open' }, '-'));
+		}
+
+
 		for (var j = 0; j < devices.length && devices[j]; j++) {
 			span.appendChild(E('img', {
 				'title': devices[j].getI18n(),
 				'src': L.resource('icons/%s%s.png'.format(devices[j].getType(), devices[j].isUp() ? '' : '_disabled'))
 			}));
-		}
-
-		if (!devices.length) {
-			span.appendChild(E('em', { 'class': 'hide-close' }, _('(no interfaces attached)')));
-			span.appendChild(E('em', { 'class': 'hide-open' }, '-'));
 		}
 
 		return span;
